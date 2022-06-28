@@ -1,0 +1,26 @@
+# Snakemake/conda
+.snakemake/
+logs/
+benchmark/
+
+*.pdf
+
+**/__pycache__
+
+# from snakemake workflow project cookie cutter team: 
+# https://github.com/snakemake-workflows/cookiecutter-snakemake-workflow/blob/master/%7B%7B%20cookiecutter.repo_name%20%7D%7D/.gitignore
+!analysis/README.md
+!config
+!config/*
+!resources
+!resources/*
+!workflow
+!workflow/**
+!.gitignore
+!.gitattributes
+!.editorconfig
+!.travis.yml
+!.test
+!LICENSE
+!README.md
+!variant-finding-workflow.sbatch

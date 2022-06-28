@@ -1,0 +1,49 @@
+experiment_name: "2022_scope_gradients_HL_adaptation"
+
+config: "config/config.yaml"
+samples: "config/samples.tsv"
+
+input: 
+  internal_standard_ref: /nfs/chisholmlab001/kve/2022_scope_gradients_HL_adaptation/inputs/internal_standard_ref/thermus_thermophilus_ref.fasta
+  kaiju_db_index: /nobackup1/chisholmlab/databases_kve/MARMICRODB/MARMICRODB.fmi
+  kaiju_db_nodes: /nobackup1/chisholmlab/databases_kve/MARMICRODB/nodes.dmp
+  kaiju_db_names: /nobackup1/chisholmlab/databases_kve/MARMICRODB/names.dmp
+  adapter_file: /nfs/chisholmlab001/kve/genomic_resources/references/illumina/all_illumina_adapters.fa
+scratch_dir: /nobackup1/chisholmlab/kve/2022_scope_gradients_HL_adaptation/scratch
+results: /nfs/chisholmlab001/kve/2022_scope_gradients_HL_adaptation/results
+
+taxons_of_interst:
+  Prochlorococcus: "Cyanobacteria; Synechococcales; Prochloraceae; Prochlorococcus;"
+  Synechococcus: "Cyanobacteria; Synechococcales; Synechococcaceae;"
+  Thermus_thermophilus: "Deinococci; Thermales; Thermaceae; Thermus;"
+  ProHighLight: "Prochlorococcus; Prochlorococus clade HL;"
+  ProHLI: "Prochlorococcus; Prochlorococus clade HL; Prochlorococus subclade HLI;"
+  ProHLII: "Prochlorococcus; Prochlorococus clade HL; Prochlorococus subclade HLII;"
+  ProHLIII_HLIV: "Prochlorococcus; Prochlorococus clade HL; Prochlorococus subclade HLIII.IV;"
+  ProHLVI: "Prochlorococcus; Prochlorococus clade HL; Prochlorococus subclade HLVI;"
+  ProLowLight: "Prochlorococcus; Prochlorococus clade LL;"
+  ProLLI: "Prochlorococcus; Prochlorococus clade LL; Prochlorococus subclade LLI;"
+  ProLLII_LLIII: "Prochlorococcus; Prochlorococus clade LL; Prochlorococus subclade LLII.III;"
+  ProLLII: "Prochlorococcus; Prochlorococus clade LL; Prochlorococus subclade LLII.III; Prochlorococus subsubclade LLII;"
+  ProLLIII: "Prochlorococcus; Prochlorococus clade LL; Prochlorococus subclade LLII.III; Prochlorococus subsubclade LLIII;"
+  ProLLIV: "Prochlorococcus; Prochlorococus clade LL; Prochlorococus subclade LLIV;"
+  ProLLVII: "Prochlorococcus; Prochlorococus clade LL; Prochlorococus subclade LLVII;"
+  ProLLVIIa: "Prochlorococcus; Prochlorococus clade LL; Prochlorococus subclade LLVII; Prochlorococus subsubclade LLVIIa;"
+  ProLLVIIb: "Prochlorococcus; Prochlorococus clade LL; Prochlorococus subclade LLVII; Prochlorococus subsubclade LLVIIb;"
+  ProLLVIIc: "Prochlorococcus; Prochlorococus clade LL; Prochlorococus subclade LLVII; Prochlorococus subsubclade LLVIIc;"
+  ProLLVIId: "Prochlorococcus; Prochlorococus clade LL; Prochlorococus subclade LLVII; Prochlorococus subsubclade LLVIId;"
+  ProLLVIIe: "Prochlorococcus; Prochlorococus clade LL; Prochlorococus subclade LLVII; Prochlorococus subsubclade LLVIIe;"
+  ProLLVIII: "Prochlorococcus; Prochlorococus clade LL; Prochlorococus subclade MIT1223;"
+  Syn5p1: "Synechococcus clade 5.1;"
+  Syn5p2: "Synechococcus clade 5.2;"
+  Syn5p3: "Synechococcus clade 5.3;"
+  Syn5p1A: "Synechococcus subclade 5.1A;"
+  Syn5p1B: "Synechococcus subclade 5.1B;"
+  SynClade_I: "Synechococcus subsubclade I;"
+  SynClade_II: "Synechococcus subsubclade II;"
+  SynClade_III: "Synechococcus subsubclade III;"
+  SynClade_IV: "Synechococcus subsubclade IV;"
+  SynClade_UC_A: "Synechococcus subsubclade UC-A;"
+  SynClade_VIII_IX: "Synechococcus subsubclade VIII.IX;"
+  SynClade_V_VI_VII: "Synechococcus subsubclade V.VI.VII;"
+  SynClade_WPCI: "Synechococcus subsubclade WPCI;"
