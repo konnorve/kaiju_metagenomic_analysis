@@ -31,21 +31,26 @@ rule bam_coverage:
     conda:
         "../envs/samtools.yaml"
     log:
-        "logs/remove_PCR_duplicates/samtools_depth/{sample}.{filter}.log"
+        "logs/samtools/samtools_depth/{sample}.{filter}.log"
     shell:
         "samtools depth -o {output} {input}"
 
-
-rule plot_bam_depths:
+rule bam_to_fastq:
     input:
-        scratch_dict["read_mapping"] / "{filter}" / "{sample}_depth.tsv"
+        scratch_dict["read_mapping"] / "{filter}" / "{sample}_mapped_sorted.bam"
     output:
-        depth_histogram = results_dict["depth_histograms"] / "{filter}" / "{sample}_depth_histogram.png",
-        depth_genome = results_dict["depth_genome"] / "{filter}" / "{sample}_depth_genome.png",
+        R1 = scratch_dict["genome_filtered_internal_standards"] / "{filter}" / "{sample}_1_unmerged.fastq.gz",
+        R2 = scratch_dict["genome_filtered_internal_standards"] / "{filter}" / "{sample}_2_unmerged.fastq.gz",
+        unpaired = scratch_dict["genome_filtered_internal_standards"] / "{filter}" / "{sample}_unpaired.fastq.gz",
     conda:
-        "../envs/deep_variant_calling.yaml"
-    script:
-        "../scripts/depth_histogram.py"
+        "../envs/samtools.yaml"
+    log:
+        "logs/samtools/bam_to_fastq/{sample}.{filter}.log"
+    threads: 5
+    shell:
+        "samtools fastq -F 4 -@ {threads} -1 {output.R1} -2 {output.R2} -s {output.unpaired} {input} > {log}"
+
+
 
 # rule index_bam:
 #     input:

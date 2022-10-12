@@ -17,8 +17,8 @@
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=kve@mit.edu
 #
-# #SBATCH -N 1
-#SBATCH -n 1
+# #SBATCH -N 2
+#SBATCH -n 40
 # #SBATCH --mem 250G
 #
 #SBATCH -o logs/%j_slurm_output.txt
@@ -34,7 +34,7 @@ snakemake --snakefile $SNAKEFILE --lint
 snakemake --snakefile $SNAKEFILE --unlock
 
 # run job:
-snakemake --cores all --resources mem_mb=250000 --snakefile $SNAKEFILE --use-conda --conda-frontend conda --rerun-incomplete
+snakemake --cores all --resources mem_mb=500000 --snakefile $SNAKEFILE --use-conda --conda-frontend conda --rerun-incomplete
 
 # get report once job is finished
 # snakemake --snakefile $SNAKEFILE --report report.html

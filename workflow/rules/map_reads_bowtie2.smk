@@ -1,10 +1,10 @@
 # map sample reads to concatenated genome
 rule map_filtered_interal_standard_reads:
     input:
-        r1 = scratch_dict["kaiju"]["merged_reads"] / "Thermus_thermophilus" / "{sample}_1_unmerged.fastq.gz",
-        r2 = scratch_dict["kaiju"]["merged_reads"] / "Thermus_thermophilus" / "{sample}_2_unmerged.fastq.gz",
-        merged = scratch_dict["kaiju"]["merged_reads"] / "Thermus_thermophilus" / "{sample}_merged.fastq.gz",
-        unpaired = scratch_dict["kaiju"]["taxon_assigned_reads"] / "Thermus_thermophilus" / "{sample}_unpaired_trimmed.fastq.gz",
+        r1 = scratch_dict["kaiju"]["merged_reads"] / config["internal_standard_taxa"] / "{sample}_1_unmerged.fastq.gz",
+        r2 = scratch_dict["kaiju"]["merged_reads"] / config["internal_standard_taxa"] / "{sample}_2_unmerged.fastq.gz",
+        merged = scratch_dict["kaiju"]["merged_reads"] / config["internal_standard_taxa"] / "{sample}_merged.fastq.gz",
+        unpaired = scratch_dict["kaiju"]["taxon_assigned_reads"] / config["internal_standard_taxa"] / "{sample}_unpaired_trimmed.fastq.gz",
         ref = Path(config["input"]["internal_standard_ref"]),
         indexing = scratch_dict["done_files"]["index"]
     output:

@@ -97,34 +97,22 @@ rule add_taxons_unpaired_reads:
             -o {output} 2> {log}
         """
 
-rule filter_taxons:
+rule filter_and_list_taxon_assigned:
     input:
         scratch_dict["kaiju"]["taxon_assignment"] / "{sample}_{readpairing}_kaiju.out"
     output:
-        scratch_dict["kaiju"]["filtering_assignments"] / "{taxon}" / "{sample}_{readpairing}_kaiju.out"
+        scratch_dict["kaiju"]["filtering_assignments"] / "{taxon}" / "{sample}_{readpairing}_kaiju.lst"
     log:
-        "logs/kaiju/filter_taxons/{taxon}.{sample}.{readpairing}.log"
+        "logs/kaiju/filter_and_list_taxon_assigned/{taxon}.{sample}.{readpairing}.log"
     benchmark:
-        "benchmark/kaiju/filter_taxons/{taxon}.{sample}.{readpairing}.benchmark"
+        "benchmark/kaiju/filter_and_list_taxon_assigned/{taxon}.{sample}.{readpairing}.benchmark"
     params:
         filtr=lambda wildcards, output: config["taxons_of_interst"][wildcards.taxon]
     shell:
         """
         echo "{params.filtr}" > {log}
-        cat {input} | grep "{params.filtr}" > {output}
+        cat {input} | grep "{params.filtr}" | awk '{{print $2}}' > {output} 2> {log}
         """
-
-rule list_taxon_assigned:
-    input:
-        scratch_dict["kaiju"]["filtering_assignments"] / "{taxon}" / "{sample}_{readpairing}_kaiju.out"
-    output:
-        scratch_dict["kaiju"]["filtering_assignments"] / "{taxon}" / "{sample}_{readpairing}_kaiju.lst"
-    log:
-        "logs/kaiju/list_taxon_assigned/{taxon}.{sample}.{readpairing}.log"
-    benchmark:
-        "benchmark/kaiju/list_taxon_assigned/{taxon}.{sample}.{readpairing}.benchmark"
-    shell:
-        "cat {input} | awk '{{print $2}}' > {output} 2> {log}"
 
 rule extract_fwd_reads:
     input:
@@ -170,6 +158,42 @@ rule extract_unpaired_reads:
         "../envs/seqtk.yaml"
     shell:
         "seqtk subseq {input.read_group} {input.assignment} > {output} 2> {log}"
+
+
+rule run_merge:
+    input:
+        r1 = scratch_dict["kaiju"]["taxon_assigned_reads"] / "{taxon}" / "{sample}_1_trimmed.fastq.gz",
+        r2 = scratch_dict["kaiju"]["taxon_assigned_reads"] / "{taxon}" / "{sample}_2_trimmed.fastq.gz"
+    output:
+        merged = scratch_dict["kaiju"]["merged_reads"] / "{taxon}" / "{sample}_merged.fastq.gz",
+        o1 = scratch_dict["kaiju"]["merged_reads"] / "{taxon}" / "{sample}_1_unmerged.fastq.gz",
+        o2 = scratch_dict["kaiju"]["merged_reads"] / "{taxon}" / "{sample}_2_unmerged.fastq.gz",
+        ihist= scratch_dict["kaiju"]["merged_reads_histogram"] / "{sample}_{taxon}_bbmerge_histogram_strict.txt",
+    conda:
+        "../envs/bbtools.yaml"
+    log:
+        "logs/merge_reads/run_merge/{sample}.{taxon}.log"
+    benchmark:
+        "benchmark/merge_reads/run_merge/{sample}.{taxon}.benchmark"
+    shell:
+        "bbmerge.sh "
+        "in1={input.r1} "
+        "in2={input.r2} "
+        "out={output.merged} "
+        "outu1={output.o1} "
+        "outu2={output.o2} "
+        "ihist={output.ihist} "
+        "interleaved=f "
+        "strict=t"
+
+rule link_unpaired_to_merged_dir:
+    input:
+        scratch_dict["kaiju"]["taxon_assigned_reads"] / "{taxon}" / "{sample}_unpaired_trimmed.fastq.gz"
+    output:
+        scratch_dict["kaiju"]["merged_reads"] / "{taxon}" / "{sample}_unpaired.fastq.gz",
+    shell:
+        "ln {input} {output}; sleep 1"
+
 
 rule zip:
     input:
